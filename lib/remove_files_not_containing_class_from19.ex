@@ -42,42 +42,62 @@ defmodule RemoveFilesNotContainingClassFrom19 do
 
   def main() do
     classes19 = [
-      "0",
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "8",
       "14",
-      "15",
-      "16",
-      "17",
-      "19",
-      "39",
-      "56",
-      "57",
-      "58",
-      "60",
+      "1",
+      "6",
+      "13",
+      "0",
+      "5",
       "18",
-      "62"
+      "3",
+      "2",
+      "7",
+      "11",
+      "12",
+      "9",
+      "4",
+      "8",
+      "17",
+      "15",
+      "10",
+      "16",
+      "19"
     ]
 
     classes19 |> Enum.each(&IO.puts(&1))
 
-    train_label_filenames = Path.wildcard("labels/train2017/*.txt") |> remove_label_files_which_corresponde_to_no_image()
+# test2007  train2007  train2012  val2007  val2012
+    train2007_label_filenames =
+      Path.wildcard("labels/train2007/*.txt")
+      |> remove_label_files_which_corresponde_to_no_image()
 
-    val_label_filenames = Path.wildcard("labels/val2017/*.txt") |> remove_label_files_which_corresponde_to_no_image()
+    train2012_label_filenames =
+      Path.wildcard("labels/train2012/*.txt")
+      |> remove_label_files_which_corresponde_to_no_image()
 
-    copy_valid_images_and_labels_to_output(val_label_filenames, classes19)
-    copy_valid_images_and_labels_to_output(train_label_filenames, classes19)
+    val2007_label_filenames =
+      Path.wildcard("labels/val2007/*.txt")
+      |> remove_label_files_which_corresponde_to_no_image()
+
+    val2012_label_filenames =
+      Path.wildcard("labels/val2012/*.txt")
+      |> remove_label_files_which_corresponde_to_no_image()
+
+    test2007_label_filenames =
+      Path.wildcard("labels/test2007/*.txt") |> remove_label_files_which_corresponde_to_no_image()
+
+    copy_valid_images_and_labels_to_output(train2007_label_filenames, classes19)
+    copy_valid_images_and_labels_to_output(train2012_label_filenames, classes19)
+    copy_valid_images_and_labels_to_output(val2007_label_filenames, classes19)
+    copy_valid_images_and_labels_to_output(val2012_label_filenames, classes19)
+    copy_valid_images_and_labels_to_output(test2007_label_filenames, classes19)
   end
 
   def remove_label_files_which_corresponde_to_no_image(label_filenames) do
-    label_filenames |> Enum.filter(fn label_filename -> 
-      label_filename |> convert_label_filename_to_image_filename() |> File.exists?
-    end) 
+    label_filenames
+    |> Enum.filter(fn label_filename ->
+      label_filename |> convert_label_filename_to_image_filename() |> File.exists?()
+    end)
   end
 
   def copy_valid_images_and_labels_to_output(label_filenames, classes19) do
