@@ -42,55 +42,41 @@ defmodule RemoveFilesNotContainingClassFrom19 do
 
   def main() do
     classes19 = [
-      "14",
-      "1",
-      "6",
-      "13",
       "0",
+      "46",
       "5",
-      "18",
-      "3",
-      "2",
-      "7",
-      "11",
-      "12",
-      "9",
-      "4",
+      "58",
+      "114",
+      "55",
+      "116",
+      "21",
+      "56",
+      "139",
+      "92",
+      "78",
+      "96",
       "8",
-      "17",
-      "15",
-      "10",
-      "16",
-      "19"
+      "2",
+      "50",
+      "25",
+      "98",
+      "99",
+      "37"
     ]
 
     classes19 |> Enum.each(&IO.puts(&1))
 
-# test2007  train2007  train2012  val2007  val2012
-    train2007_label_filenames =
-      Path.wildcard("labels/train2007/*.txt")
+    # test2007  train2007  train2012  val2007  val2012
+    train_label_filenames =
+      Path.wildcard("labels/train/*.txt")
       |> remove_label_files_which_corresponde_to_no_image()
 
-    train2012_label_filenames =
-      Path.wildcard("labels/train2012/*.txt")
+    val_label_filenames =
+      Path.wildcard("labels/val/*.txt")
       |> remove_label_files_which_corresponde_to_no_image()
 
-    val2007_label_filenames =
-      Path.wildcard("labels/val2007/*.txt")
-      |> remove_label_files_which_corresponde_to_no_image()
-
-    val2012_label_filenames =
-      Path.wildcard("labels/val2012/*.txt")
-      |> remove_label_files_which_corresponde_to_no_image()
-
-    test2007_label_filenames =
-      Path.wildcard("labels/test2007/*.txt") |> remove_label_files_which_corresponde_to_no_image()
-
-    copy_valid_images_and_labels_to_output(train2007_label_filenames, classes19)
-    copy_valid_images_and_labels_to_output(train2012_label_filenames, classes19)
-    copy_valid_images_and_labels_to_output(val2007_label_filenames, classes19)
-    copy_valid_images_and_labels_to_output(val2012_label_filenames, classes19)
-    copy_valid_images_and_labels_to_output(test2007_label_filenames, classes19)
+    copy_valid_images_and_labels_to_output(train_label_filenames, classes19)
+    copy_valid_images_and_labels_to_output(val_label_filenames, classes19)
   end
 
   def remove_label_files_which_corresponde_to_no_image(label_filenames) do
